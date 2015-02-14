@@ -1,0 +1,37 @@
+<div id="gmap" class="full"></div>
+<script type="text/javascript">
+google.maps.event.addDomListener(window, 'load', function()
+{ 
+    var lng = 139.81925904750824;
+    var lat = 35.6832894073129;
+
+    var mapOptions = {
+        zoom: 11,
+        center: new google.maps.LatLng(lat, lng),
+        mapTypeId: google.maps.MapTypeId.ROADMAP,
+        scaleControl: true
+    };
+    var mapObj = new google.maps.Map(document.getElementById('gmap'), mapOptions);
+
+    var list = [
+        <% if @stores %>
+            <% @stores.each do |store| %>
+                { id: <%= store.id %>, name: "<%= store.name %>", latlng: new google.maps.LatLng( <%= store.lat %>, <%= store.lng %>) },
+            <% end %>
+        <% end %>
+    ]
+
+    // マーカーを作成
+    list.forEach(function(store) {
+        var marker = new google.maps.Marker({
+            position: store.latlng,
+            map: mapObj,
+            title: store.name
+        });
+        google.maps.event.addListener(marker, 'click', function() {
+            location.href = "store/" + store.id;
+        })
+    });
+
+});
+</script>
