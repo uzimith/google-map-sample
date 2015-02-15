@@ -1,18 +1,32 @@
 <div id="gmap" class="full"></div>
 <script type="text/javascript">
 google.maps.event.addDomListener(window, 'load', function()
-{ 
-    var lng = 139.81925904750824;
-    var lat = 35.6832894073129;
+{
+    // URLのハッシュを参考に地点を決定する
+    var hash_data = [];
+
+    if (location.hash) {
+        hash_data = location.hash.substr(1).split(",");
+    }
+
+    var config = {
+        lat: +hash_data[0] || 35.6832894073129,
+        lng: +hash_data[1] || 139.81925904750824,
+        zoom: +hash_data[2] || 11
+    }
+
+    // Google Mapを作成する
 
     var mapOptions = {
-        zoom: 11,
-        center: new google.maps.LatLng(lat, lng),
+        zoom: config.zoom,
+        center: new google.maps.LatLng(config.lat, config.lng),
         mapTypeId: google.maps.MapTypeId.ROADMAP,
         scaleControl: true
     };
+
     var mapObj = new google.maps.Map(document.getElementById('gmap'), mapOptions);
 
+    // マーカーリスト
     var list = [
         <% if @stores %>
             <% @stores.each do |store| %>
@@ -33,5 +47,19 @@ google.maps.event.addDomListener(window, 'load', function()
         })
     });
 
+    //マップ操作のイベント
+    google.maps.event.addListener(mapObj, 'drag', function() {
+        config.lat = mapObj.getCenter().k;
+        config.lng = mapObj.getCenter().D;
+        updateHash();
+    });
+    google.maps.event.addListener(mapObj, 'zoom_changed', function() {
+        config.zoom = mapObj.getZoom();
+        updateHash();
+    });
+
+    function updateHash() {
+        location.hash = [config.lat, config.lng, config.zoom].join(",");
+    }
 });
 </script>
