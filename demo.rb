@@ -1,6 +1,5 @@
 require 'sinatra'
 require "sinatra/activerecord"
-require 'sinatra/reloader' if development?
 
 # config
 set :database, {adapter: "sqlite3", database: "database.sqlite3"}
@@ -8,14 +7,14 @@ set :bind, '0.0.0.0'
 set :port, 3000
 
 # models
-class Store < ActiveRecord::Base
+class Spot < ActiveRecord::Base
   validates :name, :lng, :lat, presence: true
 end
 
 # routes
 
 get '/' do
-  @stores = Store.all
+  @spots = Spot.all
   erb :index, layout: :top
 end
 
@@ -24,15 +23,15 @@ get '/add' do
 end
 
 post '/create' do
-  store = Store.new(@params)
-  if store.save
+  spot = Spot.new(@params)
+  if spot.save
     redirect "/"
   else
     erb :add
   end
 end
 
-get '/store/:id' do
-  @store = Store.find(@params[:id])
-  erb :store
+get '/spot/:id' do
+  @spot = Spot.find(@params[:id])
+  erb :spot
 end

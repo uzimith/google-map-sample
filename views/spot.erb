@@ -4,8 +4,8 @@
             <div id="gmap" class="frame"></div>
         </div>
         <div class="col-md-4">
-            <h1><%= @store.name %></h1>
-            <p><%= @store.point %></p>
+            <h1><%= @spot.name %></h1>
+            <p><%= @spot.point %></p>
         </div>
     </div>
 </div>
@@ -14,8 +14,8 @@
 <script type="text/javascript">
 google.maps.event.addDomListener(window, 'load', function()
 { 
-    var lng = <%= @store.lng %>;
-    var lat = <%= @store.lat %>;
+    var lng = <%= @spot.lng %>;
+    var lat = <%= @spot.lat %>;
 
     var mapOptions = {
         zoom: 16,
@@ -25,12 +25,12 @@ google.maps.event.addDomListener(window, 'load', function()
     };
     var mapObj = new google.maps.Map(document.getElementById('gmap'), mapOptions);
 
-    store = {name: "<%= @store.name %>", latlng: new google.maps.LatLng( <%= @store.lat %>, <%= @store.lng %>) }
+    spot = {name: "<%= @spot.name %>", latlng: new google.maps.LatLng( <%= @spot.lat %>, <%= @spot.lng %>) }
     // マーカーを作成
     var marker = new google.maps.Marker({
-        position: store.latlng,
+        position: spot.latlng,
         map: mapObj,
-        title: store.name
+        title: spot.name
     });
 });
 </script>
