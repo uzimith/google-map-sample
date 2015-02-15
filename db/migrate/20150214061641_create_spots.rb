@@ -5,6 +5,7 @@ class CreateSpots < ActiveRecord::Migration
       t.float :lat
       t.float :lng
       t.string :point
+      t.timestamps
     end
   end
 end

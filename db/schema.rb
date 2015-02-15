@@ -11,13 +11,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150214061641) do
+ActiveRecord::Schema.define(version: 20150215012735) do
 
-  create_table "stores", force: :cascade do |t|
-    t.string "name"
-    t.float  "lat"
-    t.float  "lng"
-    t.string "point"
+  create_table "comments", force: :cascade do |t|
+    t.string   "name"
+    t.string   "text"
+    t.integer  "spot_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "spots", force: :cascade do |t|
+    t.string   "name"
+    t.float    "lat"
+    t.float    "lng"
+    t.string   "point"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
 end
