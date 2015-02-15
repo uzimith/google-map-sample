@@ -4,9 +4,11 @@ require "sinatra/activerecord"
 #
 # config
 #
-set :database, {adapter: "sqlite3", database: "database.sqlite3"} if development?
-set :bind, '0.0.0.0' if development?
-set :port, 3000 if development?
+if development?
+  set :database, {adapter: "sqlite3", database: "database.sqlite3"}
+  set :bind, '0.0.0.0'
+  set :port, 3000
+end
 
 #
 # models
