@@ -35,13 +35,22 @@ google.maps.event.addDomListener(window, 'load', function()
         <% end %>
     ]
 
-    // マーカーを作成
     list.forEach(function(spot) {
+        // マーカー画像を作成
+        var markerImg = {
+          url: "/spot/" + spot.id + "/image",
+          size: new google.maps.Size(71, 71),
+          origin: new google.maps.Point(0, 0),
+          anchor: new google.maps.Point(17, 34),
+          scaledSize: new google.maps.Size(50, 50)
+        };
         var marker = new google.maps.Marker({
             position: spot.latlng,
             map: mapObj,
+            icon: markerImg,
             title: spot.name
         });
+        // マーカーを作成
         google.maps.event.addListener(marker, 'click', function() {
             location.href = "spot/" + spot.id;
         })
