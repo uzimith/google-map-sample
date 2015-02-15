@@ -36,3 +36,7 @@ footer li {
   display: inline;
   list-style-type: none;
 }
+
+.spot_image {
+  width: 100%;
+}

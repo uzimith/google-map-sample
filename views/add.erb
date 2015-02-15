@@ -4,9 +4,13 @@
             <div id="gmap" class="frame"></div>
         </div>
         <div class="col-md-4">
-            <form action="/spot/create" method="POST">
+            <form action="/spot/create" method="POST" enctype="multipart/form-data">
                 <div class="form-group">
-                    <label> Name <input class="form-control" type="text" name="name" value="name"> </label>
+                    <label> 名前 <input class="form-control" type="text" name="name" value="name"> </label>
+                </div>
+                <div class="form-group">
+                    <label> 写真 </label>
+                    <input type="file" name="image">
                 </div>
                 <div class="form-group">
                     <label> 緯度 <input id="lat" class="form-control" type="text" name="lat" value="35.70598101124423"> </label>
@@ -15,7 +19,7 @@
                     <label> 経度 <input id="lng" class="form-control" type="text" name="lng" value="139.9037191271782"> </label>
                 </div>
                 <div class="form-group">
-                    <label> ポイント！
+                    <label> ポイント
                         <textarea name="point" class="form-control"></textarea>
                     </label>
                 </div>

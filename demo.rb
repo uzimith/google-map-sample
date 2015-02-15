@@ -12,7 +12,7 @@ set :port, 3000
 # models
 #
 class Spot < ActiveRecord::Base
-  validates :name, :lng, :lat, presence: true
+  validates :name, :lng, :lat, :image, presence: true
   has_many :comments
 end
 
@@ -37,7 +37,15 @@ get '/spot/add' do
 end
 
 post '/spot/create' do
-  spot = Spot.new(@params)
+  spot = Spot.new({
+    name: @params[:name],
+    lat: @params[:lat],
+    lng: @params[:lng],
+    point: @params[:point],
+    image: Base64.encode64(@params[:image][:tempfile].read),
+    image_name: @params[:image][:filename],
+    image_content_type: @params[:image][:type],
+  })
   if spot.save
     redirect "/"
   else
@@ -45,9 +53,16 @@ post '/spot/create' do
   end
 end
 
+
 get '/spot/:id' do
   @spot = Spot.find(@params[:id])
   erb :spot
+end
+
+get '/spot/:id/image' do
+  @spot = Spot.find(@params[:id])
+  content_type @spot.image_content_type
+  Base64.decode64(@spot.image)
 end
 
 # コメント
