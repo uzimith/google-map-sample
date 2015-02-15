@@ -1,0 +1,25 @@
+<div class="container content">
+    <div class="row">
+        <div class="col-md-6">
+            <h4>人気のあるスポット</h4>
+            <div class="list-group">
+                <% @popular.each do |spot| %>
+                    <a href="/spot/<%= spot.id %>" class="list-group-item">
+                        <%= spot.name %> <span class="badge"><%= spot.comments_count %></span>
+                    </a>
+                <% end %>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <h4>最近のコメント</h4>
+            <div class="list-group">
+                <% @recent.each do |comment| %>
+                    <a class="list-group-item" href="/spot/<%= comment.spot.id %>">
+                        <h4 class="list-group-item-heading"><%= comment.spot.name %></h4>
+                        <p class="list-group-item-text"><%= comment.name %> : <%= comment.text %></p>
+                    </a>
+                <% end %>
+            </div>
+        </div>
+    </div>
+</div>

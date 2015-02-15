@@ -18,7 +18,7 @@ end
 
 class Comment < ActiveRecord::Base
   validates :name, :text, presence: true
-  belongs_to :spot
+  belongs_to :spot, counter_cache: true
 end
 
 #
@@ -66,3 +66,10 @@ post '/comment/create' do
   end
 end
 
+# ランキング
+
+get '/rank' do
+  @recent = Comment.order("updated_at DESC").limit(10)
+  @popular = Spot.order("comments_count DESC").limit(10)
+  erb :rank
+end
