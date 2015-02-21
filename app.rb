@@ -1,31 +1,24 @@
 require 'sinatra'
 require "sinatra/activerecord"
+require './models/comment.rb'
+require './models/spot.rb'
 
-#
-# config
-#
 if development?
-  set :database, {adapter: "sqlite3", database: "database.sqlite3"}
+  require 'sinatra/reloader'
+  ActiveRecord::Base.establish_connection("sqlite3:db/development.db")
   set :bind, '0.0.0.0'
   set :port, 3000
 end
 
-#
-# models
-#
-class Spot < ActiveRecord::Base
-  validates :name, :lng, :lat, :image, presence: true
-  has_many :comments
+helpers do
+  def h(text)
+    Rack::Utils.escape_html(text)
+  end
 end
 
-class Comment < ActiveRecord::Base
-  validates :name, :text, presence: true
-  belongs_to :spot, counter_cache: true
-end
-
-#
-# routes
-#
+# ----------
+#   routes
+# ----------
 
 get '/' do
   @spots = Spot.all
@@ -39,22 +32,27 @@ get '/spot/add' do
 end
 
 post '/spot/create' do
-  spot = Spot.new({
-    name: @params[:name],
-    lat: @params[:lat],
-    lng: @params[:lng],
-    point: @params[:point],
-    image: Base64.encode64(@params[:image][:tempfile].read),
-    image_name: @params[:image][:filename],
-    image_content_type: @params[:image][:type],
-  })
-  if spot.save
-    redirect "/"
-  else
+  unless @params[:image]
+    @error = true
     erb :add
+  else
+    spot = Spot.new({
+      name: @params[:name],
+      lat: @params[:lat],
+      lng: @params[:lng],
+      point: @params[:point],
+      image: Base64.encode64(@params[:image][:tempfile].read),
+      image_name: @params[:image][:filename],
+      image_content_type: @params[:image][:type],
+    })
+    if spot.save
+      redirect "/"
+    else
+      @error = true
+      erb :add
+    end
   end
 end
-
 
 get '/spot/:id' do
   @spot = Spot.find(@params[:id])

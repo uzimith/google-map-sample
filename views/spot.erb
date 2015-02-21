@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-sm-4">
             <h1><%= @spot.name %></h1>
-            <p><%= @spot.point %></p>
+            <p><%= markdown(h @spot.point) %></p>
             <p><img class="spot_image" src="/spot/<%= @spot.id %>/image" alt=""></p>
         </div>
         <div class="col-sm-8">
